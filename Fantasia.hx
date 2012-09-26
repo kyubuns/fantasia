@@ -58,6 +58,7 @@ class Fantasia {
     var scale = 0.3;//ToDo: ちゃんとscale調整する
     //ずらして9回描画
     for(x in -1...2) for(y in -1...2) {
+      //ToDo:先に影を描画
       var bitmap = new Bitmap(image);
       bitmap.x = baseX + stageWidth * x;
       bitmap.y = baseY + stageHeight * y;
