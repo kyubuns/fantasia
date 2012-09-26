@@ -1,5 +1,6 @@
 package;
 
+import Std;
 import js.Lib;
 import js.JQuery;
 import js.Dom;
@@ -19,6 +20,7 @@ class Fantasia {
   public function new() {
     new JQuery(Lib.document).ready(function(e) {
       Lib.window.onload = init;
+      new JQuery("#shuffle").click(shuffle);
     });
   }
 
@@ -26,10 +28,10 @@ class Fantasia {
     stage = new Stage(cast js.Lib.document.getElementById("canvas"));
 
     untyped Lib.window.addEventListener("dragover", function(e) { event.preventDefault(); }, false);
-    untyped Lib.window.addEventListener("drop", filedrop, false);
+    untyped Lib.window.addEventListener("drop", fileDrop, false);
   }
 
-  private function filedrop(event:js.Event) {
+  private function fileDrop(event:js.Event) {
     untyped event.preventDefault();
     var files:Array<js.Event> = untyped event.dataTransfer.files;
     for(file in files) {
@@ -42,15 +44,36 @@ class Fantasia {
       reader.onload = function(event:js.Event) {
         var image = untyped __js__("new Image()");
         untyped image.src = event.target.result;
-        var bitmap= new Bitmap(image);
-        image.onload = function() {
-          stage.addChild(bitmap);
-          stage.update();
-        };
+        image.onload = function(_) { drawImage(image); };
       };
       reader.readAsDataURL(file);
     }
   }
 
+  private function drawImage(image:Image) {
+    var baseX = Std.random(stageWidth);
+    var baseY = Std.random(stageHeight);
+    var angle = Std.random(60)-30; //-30 ~ +30度ぐらいで回転させる
+    var scale = 0.3;//ﾃｷﾄｰ
+    //ずらして9回描画
+    for(x in -1...2) for(y in -1...2) {
+      var bitmap = new Bitmap(image);
+      bitmap.x = baseX + stageWidth * x;
+      bitmap.y = baseY + stageHeight * y;
+      bitmap.rotation = angle;
+      bitmap.scaleX = bitmap.scaleY = scale;
+      stage.addChild(bitmap);
+    }
+    stage.update();
+  }
+
+  private function shuffle() {
+    //ToDo:
+    trace("shuffle");
+  }
+
+  //ToDo: constにする方法調べる
+  private var stageWidth = 800;
+  private var stageHeight = 600;
   private var stage:Stage;
 }
