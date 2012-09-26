@@ -51,10 +51,11 @@ class Fantasia {
   }
 
   private function drawImage(image:Image) {
+    //ToDo:Imageに枠を付ける
     var baseX = Std.random(stageWidth);
     var baseY = Std.random(stageHeight);
     var angle = Std.random(60)-30; //-30 ~ +30度ぐらいで回転させる
-    var scale = 0.3;//ﾃｷﾄｰ
+    var scale = 0.3;//ToDo: ちゃんとscale調整する
     //ずらして9回描画
     for(x in -1...2) for(y in -1...2) {
       var bitmap = new Bitmap(image);
@@ -69,8 +70,12 @@ class Fantasia {
 
   private function shuffle() {
     //ToDo:
+    //fileDrop時に画像をリストにつっこんで保存しておいて、
+    //ここでcanvas一度真っ白にして(stageのchild消すだけ)、再描画(call drawImage)
     trace("shuffle");
   }
+
+  //ToDo:保存処理
 
   //ToDo: constにする方法調べる
   private var stageWidth = 800;
